@@ -5,27 +5,43 @@ const CONFIG = {
 
   // 外部接続先を含む定義
 
-  // スプレッドシート・フォルダID
-  SPREADSHEET_ID: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-  BACKUP_FOLDER_ID: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  // スプレッドシート・フォルダID(google)
+  SPREADSHEET_ID: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+  BACKUP_FOLDER_ID: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 
   // 部屋・カレンダー設定
   ROOMS: [
-    { id: "A室", display: "A室 (24畳)", calId: "c_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@group.calendar.google.com" },
-    { id: "B室", display: "B室 (16畳)", calId: "c_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@group.calendar.google.com" },
-    { id: "C室", display: "C室 (24畳)", calId: "c_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@group.calendar.google.com" },
-    { id: "D室", display: "D室 (8.2畳)", calId: "c_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@group.calendar.google.com" },
-    { id: "厨房", display: "厨房", calId: "c_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@group.calendar.google.com" }
+        { id: "A室", display: "A室 (24畳)", calId: "c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { id: "B室", display: "B室 (16畳)", calId: "c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { id: "C室", display: "C室 (24畳)", calId: "c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { id: "D室", display: "D室 (8.2畳)", calId: "c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { id: "厨房", display: "厨房", calId: "c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" }
   ],
 
-  // メール設定（記載通りの順序）
-  OFFICE_EMAIL: "xxxxxxx@xxxxxxxxxxxxxxxxxxx.xxx",
+// 管理画面用：個別カレンダーリンク設定
+  ADMIN_CAL_LINKS: [
+    { name: "A", url: "https://calendar.google.com/calendar/u/0/r?cid=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { name: "B", url: "https://calendar.google.com/calendar/u/0/r?cid=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { name: "C", url: "https://calendar.google.com/calendar/u/0/r?cid=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { name: "D", url: "https://calendar.google.com/calendar/u/0/r?cid=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" },
+    { name: "厨房", url: "https://calendar.google.com/calendar/u/0/r?cid=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com" }
+  ],
+
+// 全体カレンダーのURL
+  CALENDAR_VIEW_URL: "https://calendar.google.com/calendar/u/0/r?src=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com&src=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com&src=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com&src=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com&src=c_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@group.calendar.google.com",
+
+  // メール設定
+  OFFICE_EMAIL: "XXXXXXXXXXXX@XXXXXXXXXXXXXXXXXXX.XXX",
   ALLOWED_ADMINS: [
-    "xxxxxxx@xxxxxxxxxxxxxxxxxxx.xxx",
-    "xxxxxxx@xxxxxxxxxxxxxxxxxxx.xxxm"
+    "XXXXXXXXXXXX@XXXXXXXXXXXXXXXXXXX.XXX",
+    "XXXXXXXXXXXX@XXXXXXXXXXXXXXXXXXX.XXX"
   ],
 
+  // ロゴの画像ソースURL
+  LOGO_IMAGE_URL: "https://drive.google.com/thumbnail?id=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&sz=w1000",
 
+  
+  
   // 各種稼働定義
 
   // 名称
