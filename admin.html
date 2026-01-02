@@ -25,6 +25,7 @@
     .page-link { cursor: pointer; border-radius: 4px !important; }
   </style>
 </head>
+
 <body>
   <div class="container-fluid">
     <div class="card p-4">
@@ -37,12 +38,10 @@
         </div>
         <div class="d-flex align-items-center">
           <span class="me-3 text-muted small">カレンダーを確認:</span>
-          <a href="https://calendar.google.com/calendar/u/0/r?cid=c_72d57de2cd3aebf5e2247f4e68570cc2cbfb5e6ac4bbd04c36c1dad5f6efaca7@group.calendar.google.com" target="_blank" class="cal-link">A</a>
-          <a href="https://calendar.google.com/calendar/u/0/r?cid=c_33a08b83486a64ec0023dc0052ce308baac90fd0e9ae5d4b4c9817f16b3@group.calendar.google.com" target="_blank" class="cal-link">B</a>
-          <a href="https://calendar.google.com/calendar/u/0/r?cid=c_5559c9df4f870b5a00107abaf2f7d47db5db6b96aa2ab95c8a40ca857abb77a8@group.calendar.google.com" target="_blank" class="cal-link">C</a>
-          <a href="https://calendar.google.com/calendar/u/0/r?cid=c_cc31870092de8867149137150119eed4d8c3f51faf83ec537b19b3a782e0ee67@group.calendar.google.com" target="_blank" class="cal-link">D</a>
-          <a href="https://calendar.google.com/calendar/u/0/r?cid=c_52e81100e474200396b429946f4560cbc3c304deb136f9d113751327a1e35567@group.calendar.google.com" target="_blank" class="cal-link">厨房</a>
-          <a href="https://calendar.google.com/calendar/u/0/r?src=c_72d57de2cd3aebf5e2247f4e68570cc2cbfb5e6ac4bbd04c36c1dad5f6efaca7@group.calendar.google.com&src=c_33a08b83486a64ec0023dc0052ce308baac90fd0e9ae5d4b4c9817f16b3@group.calendar.google.com&src=c_5559c9df4f870b5a00107abaf2f7d47db5db6b96aa2ab95c8a40ca857abb77a8@group.calendar.google.com&src=c_cc31870092de8867149137150119eed4d8c3f51faf83ec537b19b3a782e0ee67@group.calendar.google.com&src=c_52e81100e474200396b429946f4560cbc3c304deb136f9d113751327a1e35567@group.calendar.google.com" target="_blank" class="cal-link" style="color: #0d6efd;">全体</a>
+            <? config.ADMIN_CAL_LINKS.forEach(function(link) { ?>
+              <a href="<?= link.url ?>" target="_blank" class="cal-link"><?= link.name ?></a>
+            <? }); ?>
+          <a href="<?= config.CALENDAR_VIEW_URL ?>" target="_blank" class="cal-link" style="color: #0d6efd;">全体</a>
           <button class="btn btn-success btn-sm ms-3" onclick="loadReservations()">最新に更新</button>
         </div>
       </div>
@@ -111,7 +110,7 @@
           '<span class="badge bg-light text-success border border-success">精算済</span>' : 
           (r.pay === "不要" ? '<span class="text-muted small">不要</span>' : '<span class="badge bg-light text-danger border border-danger">未精算</span>');
         
-        // --- 指示内容：Webキャンセル・キャンセル時はボタンを表示しない ---
+        // Webキャンセル・キャンセル時はボタンを表示しない ---
         let actionButtons = "";
         if (r.status !== "キャンセル" && r.status !== "Webキャンセル") {
           if (r.status === "仮予約") {
@@ -123,7 +122,6 @@
           actionButtons += `<button class="btn btn-outline-danger" onclick="openConfirm(${r.row},'cancel')">取消</button>`;
         }
         
-        // 既存の管理画面レイアウトを維持し、左端に受付日時を入れる
         html += `<tr>
           <td class="small text-muted">${r.timestamp}</td> <td><div class="fw-bold">${r.date}</div><div class="fw-bold">${r.start} ～ ${r.end}</div></td>
           <td><span class="room-badge">${r.room}</span></td>
