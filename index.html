@@ -22,6 +22,117 @@
     .time-range-box { background: #fdfdfd; padding: 20px; border: 1px solid #ddd; border-radius: 4px; }
     .logo-area { text-align: center; margin-bottom: 20px; }
     .logo-img { max-height: 85px; width: auto; }
+
+    /* レスポンシブ対応のCSS追加 */
+    /* モバイル・タブレット向け（1024px以下） */
+    @media screen and (max-width: 1024px) {
+      body { background-color: white; font-size: 20px; } /* スマホは背景を白に */
+      .nav-bar { height: 10px; margin-bottom: 0; }
+      .container { padding: 0; max-width: 100%; } /* 枠を削除して画面全体を使用 */
+      .reservation-card { 
+        padding: 40px 30px; 
+        border-radius: 0; 
+        box-shadow: none; /* 影を削除 */
+      }
+      .title.is-4 { font-size: 3rem; padding-bottom: 20px; margin-bottom: 35px; }
+      .logo-img { max-height: 120px; }
+      .logo-area { margin-bottom: 35px; padding-top: 30px; }
+      .field:not(:last-child) { margin-bottom: 3rem; }
+      .label { 
+        font-size: 2.2rem; 
+        margin-bottom: 1rem; 
+        font-weight: bold; 
+        line-height: 1.4;
+      }
+      .input, .select select { 
+        font-size: 2.2rem !important; 
+        padding: 1.8rem 1.5rem !important; 
+        line-height: 2 !important;
+        min-height: 5.5rem !important;
+        height: auto !important;
+      }
+      .input::placeholder { font-size: 2rem !important; color: #aaa !important; }
+      .select select option { font-size: 2.2rem !important; }
+      .time-range-box { padding: 35px 30px; margin-top: 3rem !important; }
+      
+      /* メールアドレス欄を縦並びに強制 */
+      .columns.email-columns {
+        display: flex !important;
+        flex-direction: column !important;
+        margin-bottom: 0 !important;
+      }
+      .columns.email-columns .column { 
+        flex: none !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-bottom: 3rem !important;
+      }
+      .columns.email-columns .column:last-child {
+        margin-bottom: 0 !important;
+      }
+      
+      .button.is-medium { 
+        font-size: 2.4rem !important; 
+        padding: 2rem 2.5rem !important; 
+        font-weight: bold;
+        height: auto !important;
+        min-height: 5.5rem !important;
+      }
+      .button.is-small { 
+        font-size: 1.8rem !important; 
+        padding: 1.3rem 1.8rem !important;
+        height: auto !important;
+      }
+      .mt-6 { margin-top: 4rem !important; }
+      .mt-5 { margin-top: 3rem !important; }
+      .mb-5 { margin-bottom: 3rem !important; }
+      .mb-3 { margin-bottom: 1.5rem !important; }
+      .note-text { 
+        display: block; 
+        margin-left: 0; 
+        margin-top: 10px; 
+        font-size: 1.8rem !important; 
+        line-height: 1.6;
+      }
+      
+      /* 時刻選択は横並びを維持 */
+      .time-range-box .columns.is-mobile .column { 
+        padding: 0.8rem 0.6rem;
+      }
+      .label.is-size-7 { 
+        font-size: 2rem !important;
+        margin-bottom: 1rem;
+        font-weight: bold;
+      }
+    }
+
+    /* 小型スマホ向け（480px以下） */
+    @media screen and (max-width: 480px) {
+      .reservation-card { padding: 35px 25px; }
+      .title.is-4 { font-size: 2.8rem; }
+      .logo-img { max-height: 110px; }
+      .label { font-size: 2rem; }
+      .input, .select select { 
+        font-size: 2rem !important; 
+        padding: 1.6rem 1.3rem !important; 
+        min-height: 5.2rem !important; 
+      }
+      .input::placeholder { font-size: 1.8rem !important; }
+      .button.is-small { font-size: 1.7rem !important; padding: 1.2rem 1.6rem !important; }
+      .button.is-medium { font-size: 2.2rem !important; padding: 1.8rem 2.2rem !important; min-height: 5.2rem !important; }
+      .time-range-box { padding: 30px 25px; }
+      .label.is-size-7 { font-size: 1.8rem !important; }
+      .note-text { font-size: 1.6rem !important; }
+    }
+
+    /* デスクトップ向け（1025px以上） */
+    @media screen and (min-width: 1025px) {
+      .columns.email-columns .column:first-child { padding-right: 0.5rem; }
+      .columns.email-columns .column:last-child { padding-left: 0.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -55,7 +166,7 @@
           </div>
         </div>
 
-        <div class="columns mb-0">
+        <div class="columns mb-0 email-columns">
           <div class="column">
             <div class="field">
               <label class="label">メールアドレス</label>
