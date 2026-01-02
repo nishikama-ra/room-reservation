@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?= config.SYSTEM_NAME ?></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    :root { --nk-green: #2d5a27; --nk-bg: #f8f9f8; }
+    body { background-color: var(--nk-bg); min-height: 100vh; font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; }
+    .nav-bar { background: var(--nk-green); height: 8px; margin-bottom: 30px; }
+    .container { max-width: 700px; margin: auto; padding: 10px; }
+    .reservation-card { background: white; padding: 35px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .title.is-4 { color: var(--nk-green); border-bottom: 2px solid var(--nk-green); padding-bottom: 15px; margin-bottom: 20px; font-weight: bold; }
+    .label { font-weight: bold; color: #444; }
+    .field:not(:last-child) { margin-bottom: 1.2rem; }
+    .note-text { font-size: 0.75rem; font-weight: normal; color: #888; margin-left: 8px; }
+    .button.is-link { background-color: var(--nk-green); }
+    .time-range-box { background: #fdfdfd; padding: 20px; border: 1px solid #ddd; border-radius: 4px; }
+    .logo-area { text-align: center; margin-bottom: 20px; }
+    .logo-img { max-height: 85px; width: auto; }
+  </style>
+</head>
+<body>
+  <div class="nav-bar"></div>
+  <div class="container">
+    <div class="logo-area">
+      <img src="https://drive.google.com/thumbnail?id=1AkQFE4TehM8fIYM0yGpjp2Rktxcr5yaw&sz=w1000" class="logo-img">
+    </div>
+
+    <div class="reservation-card">
+      <h1 class="title is-4 has-text-centered">自治会館会議室予約</h1>
+      
+      <div class="has-text-centered mb-5">
+        <a href="https://calendar.google.com/calendar/u/0/r?src=c_72d57de2cd3aebf5e2247f4e68570cc2cbfb5e6ac4bbd04c36c1dad5f6efaca7@group.calendar.google.com&src=c_33a08b83486a64ec0023dc0052ce308baac90fd0e9ae5d4b4c9817f16b3@group.calendar.google.com&src=c_5559c9df4f870b5a00107abaf2f7d47db5db6b96aa2ab95c8a40ca857abb77a8@group.calendar.google.com&src=c_cc31870092de8867149137150119eed4d8c3f51faf83ec537b19b3a782e0ee67@group.calendar.google.com&src=c_52e81100e474200396b429946f4560cbc3c304deb136f9d113751327a1e35567@group.calendar.google.com" target="_blank" class="button is-small is-rounded is-info is-light">
+          <i class="far fa-calendar-check mr-2"></i>現在の空き状況を確認する
+        </a>
+      </div>
+
+      <form id="reserveForm">
+        <div class="field">
+          <label class="label">利用者名（または団体名）</label>
+          <div class="control">
+            <input class="input" type="text" name="user" placeholder="例：西鎌 太郎 / 〇〇サークル" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">電話番号</label>
+          <div class="control">
+            <input class="input" type="tel" name="tel" placeholder="例：0467-xx-xxxx" required>
+          </div>
+        </div>
+
+        <div class="columns mb-0">
+          <div class="column">
+            <div class="field">
+              <label class="label">メールアドレス</label>
+              <input class="input" type="email" id="email" name="email" placeholder="mail@example.com" required>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">（確認用再入力）</label>
+              <input class="input" type="email" id="email_conf" placeholder="もう一度入力してください" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">利用区分</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select name="category" id="categorySelect" required>
+                <option value="" disabled selected>選択してください</option>
+                <? Object.keys(config.CATEGORIES).forEach(function(key) { ?>
+                  <option value="<?= key ?>"><?= key ?></option>
+                <? }); ?>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">利用目的 <span class="note-text">※公開されます</span></label>
+          <div class="control">
+            <input class="input" type="text" name="purpose" placeholder="例：サークル練習、会議など" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">利用場所 <span class="note-text">※公開されます</span></label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select name="room" id="roomSelect" required>
+                <option value="" disabled selected>部屋を選択してください</option>
+                <? config.ROOMS.forEach(function(r) { ?>
+                  <option value="<?= r.display ?>"><?= r.display ?></option>
+                <? }); ?>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="time-range-box mt-5">
+          <div class="field">
+            <label class="label">利用日と時間</label>
+            <input class="input mb-3" type="date" name="date" id="dateInput" required>
+            <div class="columns is-mobile">
+              <div class="column">
+                <label class="label is-size-7">開始</label>
+                <div class="select is-fullwidth">
+                  <select name="start" id="startTime" required></select>
+                </div>
+              </div>
+              <div class="column">
+                <label class="label is-size-7">終了</label>
+                <div class="select is-fullwidth">
+                  <select name="end" id="endTime" required></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="button is-link is-fullwidth mt-6 is-medium" id="submitBtn">予約内容を確認する</button>
+      </form>
+
+      <div id="msg" class="notification is-success mt-4 has-text-centered" style="display:none; background-color: #f2f8f2; color: var(--nk-green);">
+        <i class="fas fa-check-circle fa-3x mb-3"></i><br>
+        <p class="is-size-5 has-text-weight-bold">送信が完了しました</p>
+        <hr>
+        <p class="mb-4">管理者による確認後、改めて「本登録」の通知を差し上げます。</p>
+        <button class="button is-link is-outlined is-fullwidth" onclick="resetForm();">続けて別の予約を行う</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG = <?!= JSON.stringify(config) ?>;
+    const PRICE_DATA = CONFIG.CATEGORIES;
+
+    function initTime() {
+      const s = document.getElementById('startTime'), e = document.getElementById('endTime');
+      s.innerHTML = '<option value="" disabled selected>選択</option>';
+      e.innerHTML = '<option value="" disabled selected>選択</option>';
+      for (let h = CONFIG.START_HOUR; h <= CONFIG.END_HOUR; h++) {
+        for (let m = 0; m < 60; m += CONFIG.TIME_STEP) {
+          if (h === CONFIG.END_HOUR && m > 0) break;
+          const t = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
+          s.add(new Option(t, t)); e.add(new Option(t, t));
+        }
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('msg').style.display = 'none';
+      document.getElementById('reserveForm').reset();
+      document.getElementById('reserveForm').style.display = 'block';
+      initTime();
+    }
+
+    window.onload = () => {
+      initTime();
+      const today = new Date();
+      const dateInput = document.getElementById('dateInput');
+      dateInput.min = new Date(today.getTime() + 86400000).toISOString().split('T')[0];
+      
+      const maxDate = new Date();
+      maxDate.setMonth(today.getMonth() + CONFIG.MAX_MONTHS_AHEAD);
+      dateInput.max = maxDate.toISOString().split('T')[0];
+    };
+
+    document.getElementById('reserveForm').onsubmit = function(e) {
+      e.preventDefault();
+      const form = this;
+      const formData = new FormData(form);
+      const btn = document.getElementById('submitBtn');
+      const selectedDateStr = formData.get('date');
+      const selectedDate = new Date(selectedDateStr.replace(/-/g, "/"));
+
+      // 電話番号の形式チェック
+      const tel = formData.get('tel');
+      const telPattern = /^(0\d{1,4}-\d{1,4}-\d{3,4}|0\d{9,10})$/;
+      if (!telPattern.test(tel)) {
+        Swal.fire({ title: '確認', text: '電話番号を正しい形式で入力してください。', icon: 'error' });
+        return;
+      }
+
+      // メールアドレスの形式チェック
+      const email = formData.get('email');
+      const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      if (!emailPattern.test(email)) {
+        Swal.fire({ title: '確認', text: 'メールアドレスを正しい形式で入力してください。', icon: 'error' });
+        return;
+      }
+
+      if (selectedDate.getDay() === 0) {
+        Swal.fire({ title: '確認', text: '日曜日は休館日のため予約できません。', icon: 'error' });
+        return;
+      }
+
+      btn.classList.add('is-loading');
+      google.script.run.withSuccessHandler(function(holiday) {
+        btn.classList.remove('is-loading');
+        if (holiday) {
+          Swal.fire({ title: '確認', text: '祝祭日は休館日のため予約できません。', icon: 'error' });
+          return;
+        }
+        showConfirm(form, formData);
+      }).isHoliday(selectedDateStr);
+    };
+
+    function showConfirm(form, formData) {
+      if (!formData.get('start') || !formData.get('end')) {
+        Swal.fire({ title: '確認', text: '開始時間と終了時間を選択してください。', icon: 'error' });
+        return;
+      }
+      if (formData.get('email') !== document.getElementById('email_conf').value) {
+        Swal.fire({ title: '確認', text: 'メールアドレスが一致しません。', icon: 'error' });
+        return;
+      }
+
+      const roomRaw = formData.get('room');
+      const room = roomRaw.substring(0, 2);
+      const cat = formData.get('category');
+      const startT = formData.get('start'), endT = formData.get('end');
+      const dStr = formData.get('date').replace(/-/g, "/");
+      const startD = new Date(dStr + " " + startT), endD = new Date(dStr + " " + endT);
+      const rawHours = (endD - startD) / (1000 * 60 * 60);
+
+      if (rawHours <= 0) {
+        Swal.fire({ title: '確認', text: '終了時刻は開始時刻より後に設定してください。', icon: 'error' });
+        return;
+      }
+
+      let calcHours = rawHours <= 1.0 ? 1.0 : Math.ceil(rawHours * 2) / 2;
+      let timeNote = (rawHours < 1.0) ? "<br>※1時間未満は1時間料金となります" : "";
+      let fee = 0, detail = "";
+
+      if (cat === "自治会活動") {
+        fee = 0;
+        detail = "自治会活動につき無料";
+      } else if (room === "厨房") {
+        fee = PRICE_DATA[cat].kitchen;
+        detail = `厨房利用：${fee.toLocaleString()}円`;
+      } else {
+        const rate = PRICE_DATA[cat].rooms[room];
+        fee = calcHours * rate;
+        detail = `単価${rate.toLocaleString()}円 × ${calcHours}時間利用${timeNote}`;
+      }
+
+      Swal.fire({
+        title: '予約内容の確認',
+        confirmButtonColor: '#2d5a27',
+        html: `<div style="text-align:left; background:#f9f9f9; padding:15px; border-radius:5px;">
+                <strong>料金： ${fee.toLocaleString()}円</strong><br>
+                <small style="color:#666;">${detail}</small><br><br>
+                日時： ${formData.get('date')} ${startT}～${endT}<br>場所： ${roomRaw}</div>`,
+        showCancelButton: true, confirmButtonText: '申し込む', cancelButtonText: '修正'
+      }).then((result) => { if (result.isConfirmed) executeSubmit(form); });
+    }
+
+    function executeSubmit(form) {
+      const btn = document.getElementById('submitBtn');
+      btn.classList.add('is-loading');
+      const fd = {};
+      new FormData(form).forEach((v, k) => {
+        if(k === 'room') fd[k] = v.substring(0, 2);
+        else fd[k] = v;
+      });
+      google.script.run.withSuccessHandler(() => {
+        btn.classList.remove('is-loading');
+        document.getElementById('reserveForm').style.display = 'none';
+        document.getElementById('msg').style.display = 'block';
+      }).withFailureHandler((err) => {
+        btn.classList.remove('is-loading');
+        Swal.fire({ title: 'エラー', text: err.message, icon: 'error' });
+      }).processForm(fd);
+    }
+  </script>
+</body>
+</html>

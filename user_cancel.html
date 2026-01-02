@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      body { background-color: #f8f9fa; padding: 20px; font-family: sans-serif; }
+      .cancel-card { max-width: 500px; margin: 50px auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+      .btn-cancel { background-color: #d33; color: white; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <div class="cancel-card has-text-centered">
+      <h2 class="title is-4">予約キャンセル</h2>
+      <p class="subtitle is-6 mt-2">西鎌倉住宅地自治会館</p>
+      
+      <div class="notification is-warning is-light is-size-7 has-text-left">
+        ボタンを押すと、予約が即座に取り消されます。この操作は元に戻せません。
+      </div>
+
+      <button id="cancelBtn" class="button is-large is-fullwidth btn-cancel" onclick="confirmCancel()">予約をキャンセルする</button>
+      
+      <p class="mt-5 is-size-7 has-text-grey">
+        ※間違いでこの画面を開いた場合は、何もせずに閉じてください。
+      </p>
+    </div>
+
+    <script>
+      const resId = "<?= reservationId ?>";
+
+      function confirmCancel() {
+        const btn = document.getElementById('cancelBtn');
+        
+        Swal.fire({
+          title: '本当によろしいですか？',
+          text: "予約を取り消し、カレンダーから削除します。",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'はい、キャンセルします',
+          cancelButtonText: 'いいえ'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            btn.classList.add('is-loading');
+            google.script.run
+              .withSuccessHandler(() => {
+                Swal.fire({
+                  title: 'キャンセル完了',
+                  text: '予約の取り消しが完了しました。通知メールをお送りしました。',
+                  icon: 'success'
+                }).then(() => {
+                  document.body.innerHTML = '<div class="has-text-centered" style="margin-top:100px;"><h1 class="title">キャンセル完了</h1><p>この画面を閉じてください。</p></div>';
+                });
+              })
+              .withFailureHandler((err) => {
+                btn.classList.remove('is-loading');
+                Swal.fire('エラー', err.message, 'error');
+              })
+              .cancelByUserId(resId);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
